@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("#fmt").hide();
+			$("#btn-edit").click(btnEditClicked);
+			
+			});
+			
+			function btnEditClicked(){
+				$("#detail").hide();
+				$("#fmt").show();
+				$("#subject").hide();
+				
+			}
+		
+	
+	</script>
+</head>
+<body>
+	<h1>게시글 상세보기</h1>
+	<a href="#">상세페이지</a>
+	<hr>
+	
+		<ul id="detail">
+			<li>[[${detail.bno}]]</li>
+			<li>
+				<span>[[${detail.creatorId}]]</span>
+				<span>[[${detail.createdDate}]]</span>
+			</li>
+			<li>
+				<span>[[${detail.subject}]]</span>
+			
+			</li>
+			<li th:if="${not #lists.isEmpty(detail.files)}">
+				<span th:each="file:${detail.files}">
+					<a th:href="@{/board/fileDown/{fno}(fno=${file.fno})}">
+						<span>[[${file.originalName}]]</span>
+						<span>[[${file.fileSize/1024}]]KB</span>
+					</a>
+					<a th:href="@{/board/delFile/{bno}/{fno}(bno=${detail.bno},fno=${file.fno})}">x</a>
+				</span>
+				
+			</li>
+			<li>[[${detail.contents}]]</li>
+			<li>
+				<a th:href="|/board/delete/${detail.bno}|">삭제</a>
+				<a href="#" id="btn-edit">수정</a>
+			</li>
+			</ul>
+			
+		<form id="fmt" action="/board/edit" method="post">
+			<ul>
+			<li>
+				[[${detail.bno}]]
+				<input type="hidden" name="bno" th:value="${detail.bno}">
+			</li>
+			<li>
+				<span>
+					[[${detail.creatorId}]]
+					<input type="hidden" name="creatorId" th:value="${detail.creatorId}">
+				</span>
+				<span>[[${detail.createdDate}]]</span>
+			</li>
+			<li>
+				<input type="text" name="subject" th:value="${detail.subject}">
+			</li>
+			<li th:if="${not #lists.isEmpty(detail.files)}">
+				<span th:each="file:${detail.files}">
+					<a th:href="@{/board/fileDown/{fno}(fno=${file.fno})}">
+						<span>[[${file.originalName}]]</span>
+						<span>[[${file.fileSize/1024}]]KB</span>
+					</a>
+					<a th:href="@{/board/delFile/{bno}/{fno}(bno=${detail.bno},fno=${file.fno})}">x</a>
+				</span>
+				
+			</li>
+			<li>
+				<textarea id="contents" name="contents" rows="5" cols="50">[[${detail.contents}]]</textarea>
+			</li>
+			<li>
+			<input type="submit" value="수정완료">
+			
+			</li>
+		</ul>
+	
+	</form>
+</body>
+</html>

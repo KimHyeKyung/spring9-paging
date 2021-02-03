@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>멀티파일 업로드 글쓰기 페이지</h1>
+	<hr>
+	<form action="/board/multiFile" method="post" enctype="multipart/form-data">
+		<p>
+			<input type="text" name="subject" placeholder="제목입력">
+		</p>
+		<p>
+			<textarea name="contents" rows="5" cols="50"></textarea>
+		</p>
+		<p>
+			<input type="file" name="files" multiple="multiple" >
+		</p>
+		<p>
+			<input type="hidden" name="creatorId" value="guest">
+			<button type="submit">글쓰기</button>
+		</p>
+		
+		
+	</form>
+</body>
+</html>

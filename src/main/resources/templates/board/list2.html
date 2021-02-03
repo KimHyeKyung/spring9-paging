@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<style type="text/css">
+		ul{
+			display: flex;
+			list-style: none;
+		}
+	</style>
+</head>
+<body>
+	<h1>게시글 페이지</h1>
+	<a href="/board/multiFile">글쓰기</a>
+	<div>
+		<div id="board-list">
+			<ul>
+				<li>no</li>
+				<li>제목</li>
+				<li>조회수</li>
+				<li>작성자</li>
+				<li>작성일</li>
+			</ul>
+			<ul th:each="ent:${page.getContent()}">
+				<li>[[${ent.bno}]]</li>
+				<li><a th:href="|/board/detail/${ent.bno}|">[[${ent.subject}]]</a>
+				<span th:if="${not #lists.isEmpty(ent.files)}">파일</span></li>
+				<li>[[${ent.readCount}]]</li>
+				<li>[[${ent.creatorId}]]</li>
+				<li>[[${ent.updatedDate}]]</li>
+			</ul>
+			<!-- 더보기버튼이 눌러졌을때 여기에 추가 -->
+		</div>
+		
+					<!-- 더보기 처리 -->
+		<div>
+			<input id="pi" type="hidden" th:value="${page.getNumber()}">
+			<button id="btn-add" th:if="${!page.isLast()}" onclick="addList()">더보기</button>
+		</div>
+		<script type="text/javascript">
+			function addList(){
+				$.ajax({
+					url : "/board/addList",
+					type : "post",
+					data : { index:$("#pi").val() },
+					success : function(result){
+						var i = parseInt($("#pi").val());
+						$("#pi").val(i+1);
+						$(result).appendTo("#board-list");
+						if($(".pno:last").val()=="true"){
+							$("#btn-add").hide();
+						}
+						
+					}
+				});
+			}
+		</script>
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>게시글 페이지</h1>
+	<a href="/board/multiFile">글쓰기</a>
+	<div>
+		<table>
+			<tr>
+				<td>no</td>
+				<td>제목</td>
+				<td>조회수</td>
+				<td>작성자</td>
+				<td>작성일</td>
+			</tr>
+			<tr th:each="ent:${list}">
+				<td>[[${ent.bno}]]</td>
+				<td><a th:href="|/board/detail/${ent.bno}|">[[${ent.subject}]]</a>
+				<span th:if="${not #lists.isEmpty(ent.files)}">파일</span></td>
+				<td>[[${ent.readCount}]]</td>
+				<td>[[${ent.creatorId}]]</td>
+				<td>[[${ent.updatedDate}]]</td>
+			</tr>
+			
+		</table>
+		
+		<!-- 페이징처리 -->
+		<div>
+		<!-- 시작번호:1
+			마지막페이지번호: page.getTotalPages() -->
+			<a th:if="${pageInfo.from > 1}" th:href="|/board/FileBoard/${pageInfo.from-1}|">&lt;</a>
+			
+			<th:block th:each="pno:${#numbers.sequence(pageInfo.from, pageInfo.to)}">
+				<span>
+					<a th:href="|/board/FileBoard/${pno}|">[[${pno}]]</a>
+				</span>
+			</th:block>
+			<a th:if="${pageInfo.to < pageInfo.pageTot}" th:href="|/board/FileBoard/${pageInfo.to+1}|">&gt;</a>
+		</div>
+		
+	</div>
+</body>
+</html>

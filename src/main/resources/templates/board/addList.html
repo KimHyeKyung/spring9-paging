@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<ul th:each="ent:${page.getContent()}">
+	<li>[[${ent.bno}]]
+		<input class="pno" type="hidden" th:value="${page.isLast}">
+	</li>
+	<li>
+		<a th:href="|/board/detail/${ent.bno}|">[[${ent.subject}]]</a>
+		<span th:if="${not #lists.isEmpty(ent.files)}">파일</span>
+	</li>
+	<li>[[${ent.readCount}]]</li>
+	<li>[[${ent.creatorId}]]</li>
+	<li>[[${ent.updatedDate}]]</li>
+</ul>
+
+</html>
